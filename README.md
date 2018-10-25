@@ -14,6 +14,14 @@ This repository publishes to two different NPM modules:
 
 We strongly suggest that you use `swagger-ui` instead of `swagger-ui-dist` if you're building a single-page application, since `swagger-ui-dist` is significantly larger.
 
+## Run with Docker
+
+    docker build -t swagger_fhir:latest -F ./Dockerfile .
+    docker run -p 3200:8080  swagger_fhir:latest
+    
+Then point your browser to:
+
+    http://localhost:3200
 
 ## Compatibility
 The OpenAPI Specification has undergone 5 revisions since initial creation in 2010.  Compatibility between Swagger UI and the OpenAPI Specification is as follows:
