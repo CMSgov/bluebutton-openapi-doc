@@ -18,7 +18,7 @@ ENV OAUTH_ADDITIONAL_PARAMS "**None**"
 # ENV SWAGGER_JSON "/app/swagger.json"
 ENV SWAGGER_JSON "/bb2_fhir.yaml"
 ENV PORT 8080
-ENV BASE_URL "http://localhost:3200/bb2_fhir.yaml"
+ENV BASE_URL ""
 ENV CONFIG_URL ""
 
 COPY nginx.conf /etc/nginx/
@@ -26,7 +26,7 @@ COPY nginx.conf /etc/nginx/
 # copy swagger files to the `/js` folder
 COPY ./dist/* /usr/share/nginx/html/
 
-COPY ./bb2_fhir.yaml /usr/share/nginx/html/bb2_fhir.yaml
+COPY bluebutton/bb2_fhir.yaml /usr/share/nginx/html/bb2_fhir.yaml
 
 COPY ./docker-run.sh /usr/share/nginx/
 

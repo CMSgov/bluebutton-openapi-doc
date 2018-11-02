@@ -1,0 +1,22 @@
+Bundle_Patient:
+  type: object
+  description: A bundle of Patient resources returned by a search
+  properties:
+    resourceType:
+      minLength: 1
+      type: string
+    total:
+      type: number
+    link:
+      type: array
+      items:
+      - $ref: '#/components/schemas/Link_Info'
+    entry:
+      type: array
+      items:
+      - $ref: '#/components/schemas/Patient'
+    meta:
+      type: object
+    type:
+      type: string
+

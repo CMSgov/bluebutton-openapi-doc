@@ -1,0 +1,987 @@
+openapi: 3.0.0
+info:
+  title: Blue Button 2.0 with OAuth2
+  description: |-
+    **D R A F T -- D R A F T -- D R A F T -- D R A F T -- D R A F T -- D R A F
+        T**
+
+    The Centers for Medicare & Medicaid Services (CMS) Blue Button 2.0 API is a
+        developer-friendly, standards-based, data API that enables Medicare
+        beneficiaries to connect their Medicare claims data to the applications,
+        services, and research programs they trust.
+
+    Claims information that extends as far back as 2015 can be accessed using the
+        HL7 Fast Healthcare interoperability Resource (FHIR) specification.
+
+    Fast Healthcare Interoperability Resources (FHIR, pronounced "Fire") defines
+        a set of "resources" that represent granular clinical concepts. The
+        resources can be managed in isolation, or aggregated into complex documents.
+        Technically, FHIR is designed for the web; the resources are based on simple
+        XML or JSON structures, with an http-based RESTful protocol where each
+        resource has predictable URL. Where possible, open internet standards are
+        used for data representation and OAuth2 is used to control access to secure
+        FHIR resources..
+
+    The **CMS Blue Button 2.0 API** is keyed by a unique Patient id. This id is
+        used to apply filter parameters in requests and searches to limit the
+        information returned to that of the logged in user.
+
+    In FHIR terms the **Medicare Beneficiary** is the "**Patient**." In order to
+        be  consistent with the FHIR specification we will use the term Patient
+        throughout this documentation to refer to the Medicare Beneficiary.
+
+    This is the frist version of ouur OpenAPI3 definiiton docuument that attempts to
+        import fhir json schema from an external file in the fhir sub-directory.
+  version: v1.0.33
+servers:
+- url: https://sandbox.bluebutton.cms.gov/v1/fhir
+  description: Blue Button 2.0 API - Sandbox with Synthetic data
+tags:
+- name: Metadata
+- name: CapabilityStatement
+- name: Patient
+- name: Coverage
+- name: ExplanationOfBenefit
+paths:
+  /metadata:
+    description: Metadata statement. In DSTU2 this was known as the ConformanceStatement. In STU3 this was changed to the CapabilityStatement
+    get:
+      tags:
+      - Metadata
+      - CapabilityStatement
+      parameters:
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        style: FORM
+        explode: true
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      - name: Content-Type
+        in: header
+        required: false
+        style: SIMPLE
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/CapabilityStatement'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+  /CapabilityStatement:
+    description: Metadata statement. In DSTU2 this was known as the ConformanceStatement. In STU3 this was changed to the CapabilityStatement
+    get:
+      security:
+        - OAuth2:
+          - read
+      tags:
+      - CapabilityStatement
+      parameters:
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        style: FORM
+        explode: true
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/CapabilityStatement'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /Coverage:
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - Coverage
+      parameters:
+      - name: beneficiary
+        in: query
+        description: Covered party
+        required: false
+        schema:
+          type: string
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      - name: startIndex
+        in: query
+        description: The startiing item in the set of records found by search
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: _count
+        in: query
+        description: The number of records to return in the bundle [maximum=50]
+        required: false
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+          default: 10
+      - name: count
+        in: query
+        description: 'Deprecated: Use _count instead'
+        required: false
+        deprecated: true
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: "Successful Coverage search operation"
+          schema:
+            type: object
+            items:
+              $ref: '#/components/schemas/Bundle_Coverage'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /Coverage/{id}:
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - Coverage
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the resource
+        required: true
+        schema:
+          type: string
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/Coverage'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /ExplanationOfBenefit:
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - ExplanationOfBenefit
+      parameters:
+      - name: patient
+        in: query
+        description: The reference to the patient
+        required: false
+        schema:
+          type: string
+      - name: startIndex
+        in: query
+        description: The startiing item in the set of records found by search
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: _count
+        in: query
+        description: The number of records to return in the bundle [maximum=50]
+        required: false
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+          default: 10
+      - name: count
+        in: query
+        description: 'Deprecated: Use _count instead'
+        required: false
+        deprecated: true
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/Bundle_ExplanationOfBenefit'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /ExplanationOfBenefit/{id}:
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - ExplanationOfBenefit
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/ExplanationOfBenefit'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /Patient:
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - Patient
+      parameters:
+      - name: _id
+        in: query
+        description: The ID of the resource
+        required: false
+        schema:
+          type: string
+      - name: identifier
+        in: query
+        description: A patient identifier
+        required: false
+        schema:
+          type: string
+      - name: _format
+        in: query
+        description: The format for the returned body content
+        required: false
+        schema:
+          type: string
+          default: application/fhir+json
+          enum:
+          - application/fhir+json
+          - application/json
+      responses:
+        200:
+          $ref: '#/components/schemas/Bundled_Patient'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+  /Patient/{id}:
+    summary: Get a patient by ID
+    get:
+      security:
+      - OAuth2:
+        - read
+      tags:
+      - Patient
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          $ref: '#/components/schemas/Patient'
+        401:
+          $ref: '#/components/schemas/Error-401'
+        403:
+          $ref: '#/components/schemas/Error-403'
+        404:
+          $ref: '#/components/schemas/Error-404'
+
+components:
+  schemas:
+    Patient:
+      type: object
+      description: A Patient resource
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+          item: Patient
+        meta:
+          type: object
+          lastUpdated:
+            type: dateTime
+        id:
+          type: string
+          pattern: '^[A-Za-z0-9\-\.]{1,64}$'
+          description: FHIR Id for the resource
+        extension:
+          type: object
+          description: StructureDefinition for bluebutton patient race extension
+          properties:
+            valueCoding:
+              type: object
+              properties:
+                display:
+                  type: string
+                  items:
+                    oneOf:
+                    - Unknown
+                    - White
+                    - Black
+                    - Other
+                    - Asian
+                    - Hispanic
+                    - North American Native
+                system:
+                  type: string
+                  item: "https://bluebutton.cms.gov/resources/variables/race"
+                code:
+                  type: integer
+                  items:
+                    oneOf:
+                    - 0
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                    - 5
+                    - 6
+        identifier:
+          type: array
+          properties:
+            entry_0:
+              type: object
+              additionalProperties:
+                value:
+                  type: string
+                  example: 20140000002122
+                system:
+                  type: string
+                  item: 'https://bluebutton.cms.gov/resources/variables/bene_id'
+            entry_1:
+              type: object
+              additionalProperties:
+                value:
+                  type: string
+                  example: 0886bc0350ed083661e7444b8c7def0de104f3e515bf3e581b96638857e83afc
+                system:
+                  type: string
+                  item: 'https://bluebutton.cms.gov/resources/identifier/hicn-hash'
+        name:
+          type: array
+          properties:
+            name_details:
+              type: object
+              properties:
+                use:
+                  type: string
+                  oneOf:
+                  - usual
+                  - official
+                  - temp
+                  - nickname
+                  - anonymous
+                  - old
+                  - maiden
+                  example: usual
+                family:
+                  type: string
+                given:
+                  type: array
+                  items:
+                    type: string
+                  example: "Tom, B "
+        gender:
+          type: string
+          items:
+          - male
+          - female
+          - other
+          - unknown
+        birthDate:
+          type: date
+          pattern: '^-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?$'
+          example: '2010-11-21'
+          description: Date of birth in YYYY-MM-DD format
+        address:
+          type: array
+          $ref: '#/components/schemas/address'
+
+      required:
+      - resourceType
+      - id
+      - extension
+      - gender
+
+    Bundle_Coverage:
+      type: object
+      description: A bundle of coverage resources returned by a search
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        total:
+          type: number
+        link:
+          type: array
+          items:
+          $ref: '#/components/schemas/Link_Info'
+        entry:
+          type: array
+          items:
+          $ref: '#/components/schemas/Coverage'
+        meta:
+          type: object
+        type:
+          type: string
+
+    Un-Bundled_Patient:
+      type: object
+      description: A bundle of Patient resources returned by a search
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        total:
+          type: number
+        link:
+          type: array
+          $ref: '#/components/schemas/Link_Info'
+        entry:
+          type: array
+          $ref: './fhir/Patient.schema.json'
+        meta:
+          type: object
+
+
+    Bundle_Patient:
+      type: object
+      description: A bundle of Patient resources returned by a search
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        total:
+          type: number
+        link:
+          type: array
+          $ref: '#/components/schemas/Link_Info'
+        entry:
+          type: array
+          $ref: 'fhir/patient.schema.json'
+        meta:
+          type: object
+
+    Bundle_ExplanationOfBenefit:
+      type: object
+      description: A bundle of ExplanationOfBenefit resources returned by a search
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        total:
+          type: number
+        link:
+          type: array
+          $ref: '#/components/schemas/Link_Info'
+        entry:
+          type: array
+          $ref: '#/components/schemas/ExplanationOfBenefit'
+        meta:
+          type: object
+        type:
+          type: string
+
+    CapabilityStatement:
+      type: object
+      description: Describes the services and resources provided by this FHIR Server
+      properties:
+        resourceType:
+          minLength: 1
+
+    Coverage:
+      required:
+      - beneficiaryReference
+      - dependent
+      - id
+      - identifier
+      - issuerReference
+      - period
+      - plan
+      - planholderReference
+      - relationship
+      - resourceType
+      - sequence
+      - subPlan
+      - text
+      - type
+      type: object
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        meta:
+          type: object
+          lastUpdated:
+            type: dateTime
+        id:
+          minLength: 1
+          type: string
+        beneficiary:
+          type: object
+          properties:
+            reference:
+              type: string
+              example: Patient/20140000003122
+        grouping:
+          type: object
+          properties:
+            subGroup:
+              type: string
+              example: Medicare
+            subPlan:
+              type: string
+              oneOf:
+                - Part A
+                - Part B
+                - Part D
+        type:
+          type: object
+          properties:
+            coding:
+              type: array
+              properties:
+                type: object
+                properties:
+                  system:
+                    type: string
+                    example: Medicare
+                  code:
+                    type: string
+                    oneOf:
+                    - Part A
+                    - Part B
+                    - Part D
+        status:
+          type: string
+          example: active
+        extension:
+          type: arrray
+          anyOf:
+          enum:
+          - $ref: '#/components/schemas/Coverage_ESRD'
+          - $ref: '#/components/schemas/Coverage_OASI'
+        identifier:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+            - system
+            - value
+            properties:
+              system:
+                minLength: 1
+                type: string
+              value:
+                minLength: 1
+                type: string
+        plan:
+          minLength: 1
+          type: string
+        subPlan:
+          minLength: 1
+          type: string
+        dependent:
+          type: number
+        sequence:
+          type: number
+      description: Describes the insurance coverages that a Medicare beneficiary has.
+    ExplanationOfBenefit:
+      required:
+      - _created
+      - claimReference
+      - coverage
+      - created
+      - disposition
+      - id
+      - identifier
+      - item
+      - organizationReference
+      - patientReference
+      - resourceType
+      - text
+      - totalBenefit
+      - totalCost
+      type: object
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        meta:
+          type: object
+          lastUpdated:
+            type: dateTime
+        id:
+          minLength: 1
+          type: string
+        text:
+          $ref: '#/components/schemas/Coverage_text'
+        identifier:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+            - system
+            - value
+            properties:
+              system:
+                minLength: 1
+                type: string
+              value:
+                minLength: 1
+                type: string
+        claimReference:
+          $ref: '#/components/schemas/Coverage_issuerReference'
+        created:
+          minLength: 1
+          type: string
+        _created:
+          $ref: '#/components/schemas/ExplanationOfBenefit__created'
+        disposition:
+          minLength: 1
+          type: string
+        organizationReference:
+          $ref: '#/components/schemas/Coverage_issuerReference'
+        patientReference:
+          $ref: '#/components/schemas/Coverage_issuerReference'
+        coverage:
+          $ref: '#/components/schemas/ExplanationOfBenefit_coverage'
+        item:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+            - sequence
+            - servicedDate
+            properties:
+              sequence:
+                type: number
+              type:
+                required:
+                - code
+                type: object
+                properties:
+                  code:
+                    minLength: 1
+                    type: string
+              providerReference:
+                required:
+                - reference
+                type: object
+                properties:
+                  reference:
+                    minLength: 1
+                    type: string
+              service:
+                required:
+                - code
+                - system
+                type: object
+                properties:
+                  system:
+                    minLength: 1
+                    type: string
+                  code:
+                    minLength: 1
+                    type: string
+              servicedDate:
+                minLength: 1
+                type: string
+              unitPrice:
+                required:
+                - code
+                - system
+                - value
+                type: object
+                properties:
+                  value:
+                    type: number
+                  system:
+                    minLength: 1
+                    type: string
+                  code:
+                    minLength: 1
+                    type: string
+              net:
+                required:
+                - code
+                - system
+                - value
+                type: object
+                properties:
+                  value:
+                    type: number
+                  system:
+                    minLength: 1
+                    type: string
+                  code:
+                    minLength: 1
+                    type: string
+              adjudication:
+                minItems: 1
+                uniqueItems: true
+                type: array
+                items:
+                  properties:
+                    category:
+                      required:
+                      - code
+                      type: object
+                      properties:
+                        code:
+                          minLength: 1
+                          type: string
+                    amount:
+                      required:
+                      - code
+                      - system
+                      - value
+                      type: object
+                      properties:
+                        value:
+                          type: number
+                        system:
+                          minLength: 1
+                          type: string
+                        code:
+                          minLength: 1
+                          type: string
+        totalCost:
+          $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
+        totalBenefit:
+          $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
+      description: A bundle of beneficiary claims information in the ExplanationOfBenefit resource format.
+    Error-401:
+      description: Authentication credentials were not provided. Unable to continue.
+    Error-403:
+      description: The Access token does not have the correct scopes or permissions. Unable to process your request.
+    Error-404:
+      description: The page/resource you requested was not found.
+    Coverage_text:
+      type: object
+      properties:
+        status:
+          minLength: 1
+          type: string
+        div:
+          minLength: 1
+          type: string
+    Coverage_issuerReference:
+      type: object
+      properties:
+        reference:
+          minLength: 1
+          type: string
+    Coverage_period:
+      type: object
+      properties:
+        start:
+          minLength: 1
+          type: string
+        end:
+          minLength: 1
+          type: string
+    Coverage_ESRD:
+      valueCoding:
+        type: object
+        properties:
+          display:
+            type: string
+            example: Aged without end-stage renal disease (ESRD)
+          system:
+            type: string
+            example: https://bluebutton.cms.gov/resources/variables/ms_cd
+          code:
+            type: string
+            examples: 10
+    Coverage_OASI:
+      valueCoding:
+        type: object
+        properties:
+          display:
+            type: string
+            example: Old age and survivor’s insurance (OASI)
+          system:
+            type: string
+            example: https://bluebutton.cms.gov/resources/variables/orec
+          code:
+            type: string
+            examples: 0
+
+    Coverage_type:
+      type: object
+      properties:
+        system:
+          minLength: 1
+          type: string
+        code:
+          minLength: 1
+          type: string
+        display:
+          minLength: 1
+          type: string
+    Coverage_relationship:
+      type: object
+      properties:
+        code:
+          minLength: 1
+          type: string
+    ExplanationOfBenefit__created:
+      type: object
+      properties:
+        fhir_comments:
+          type: array
+          items:
+            properties: {}
+    ExplanationOfBenefit_coverage:
+      type: object
+      properties:
+        coverageReference:
+          $ref: '#/components/schemas/Coverage_issuerReference'
+    ExplanationOfBenefit_totalCost:
+      type: object
+      properties:
+        value:
+          type: number
+        system:
+          minLength: 1
+          type: string
+        code:
+          minLength: 1
+          type: string
+    Patient_managingOrganization:
+      type: object
+      properties:
+        reference:
+          minLength: 1
+          type: string
+        display:
+          minLength: 1
+          type: string
+    Link_Info:
+      type: object
+      properties:
+        url:
+          minLength: 1
+          type: string
+        relation:
+          minLength: 1
+          type: string
+    address:
+      type: object
+      properties:
+        id:
+          type: string
+          required: false
+        district:
+          type: string
+          description: CMS SSA to FIPS State and County Crosswalk http://www.nber.org/data/ssa-fips-state-county-crosswalk.html
+        state:
+          type: string
+          example: MD, DE
+        postalCode:
+          type: string
+          example: 21244
+
+
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://sandbox.bluebutton.cms.gov/v1/o/authorize/
+          tokenUrl: https://sandbox.bluebutton.cms.gov/v1/o/token/
+          scopes:
+            read: Read resources
+
+

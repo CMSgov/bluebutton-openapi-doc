@@ -1,0 +1,21 @@
+Patient:
+  type: object
+  description: A Patient resource
+  properties:
+    resourceType:
+      minLength: 1
+      type: string
+      enum: Patient
+    meta:
+      type: object
+    gender:
+      type: string
+      items:
+      - male
+      - female
+      - other
+      - unknown
+  required:
+  - resourceType
+  - gender
+

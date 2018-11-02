@@ -29,7 +29,10 @@ info:
     In FHIR terms the **Medicare Beneficiary** is the "**Patient**." In order to
         be  consistent with the FHIR specification we will use the term Patient
         throughout this documentation to refer to the Medicare Beneficiary.
-  version: v1.0.32
+
+    This is the frist version of ouur OpenAPI3 definiiton docuument that attempts to
+        import fhir json schema from an external file in the fhir sub-directory.
+  version: v1.0.33
 servers:
 - url: https://sandbox.bluebutton.cms.gov/v1/fhir
   description: Blue Button 2.0 API - Sandbox with Synthetic data
@@ -338,7 +341,7 @@ paths:
           - application/json
       responses:
         200:
-          $ref: '#/components/schemas/Bundle_Patient'
+          $ref: '#/components/schemas/Bundled_Patient'
         401:
           $ref: '#/components/schemas/Error-401'
         403:
@@ -373,6 +376,8 @@ paths:
 components:
   schemas:
     Patient:
+      $ref: "./Patient.schema.json"
+    Patients:
       type: object
       description: A Patient resource
       properties:
@@ -509,7 +514,7 @@ components:
         type:
           type: string
 
-    Bundle_Patient:
+    Bundled_Patient:
       type: object
       description: A bundle of Patient resources returned by a search
       properties:
@@ -524,6 +529,25 @@ components:
         entry:
           type: array
           $ref: '#/components/schemas/Patient'
+        meta:
+          type: object
+
+
+    Bundle_Patient:
+      type: object
+      description: A bundle of Patient resources returned by a search
+      properties:
+        resourceType:
+          minLength: 1
+          type: string
+        total:
+          type: number
+        link:
+          type: array
+          $ref: '#/components/schemas/Link_Info'
+        entry:
+          type: array
+          $ref: './Patient.schema.json'
         meta:
           type: object
 

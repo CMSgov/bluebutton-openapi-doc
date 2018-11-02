@@ -1,0 +1,4 @@
+id:
+  type: string
+  pattern: '^[A-Za-z0-9\-\.]{1,64}$'
+  description: FHIR Id for the resource
