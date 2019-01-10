@@ -451,6 +451,9 @@ components:
         resourceType:
           minLength: 1
 
+    Patient:
+      type: object
+
     Coverage:
       required:
       - beneficiaryReference
