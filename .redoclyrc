@@ -1,0 +1,9 @@
+specFileName: >-
+  /Users/mark/Documents/_Local/Developer/cms/cmsgov/bluebutton-openapi-doc/bluebutton/bb2_fhir_openapi.yaml
+apiTitle: 'CMS Blue Button 2.0 API '
+splitSpec: false
+codeSamples: true
+swaggerUI: true
+travis: true
+repo: cmsgov/bluebutton-openapi-doc
+oasVersion: 3.0.0
