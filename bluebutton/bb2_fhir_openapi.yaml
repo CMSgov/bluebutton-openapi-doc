@@ -73,7 +73,7 @@ paths:
                 - client_id
       responses:
         200:
-          $ref: '#/components/schemas/Success-200-Empty'
+          $ref: '#/components/schemas/Success-200Empty'
         401:
           $ref: '#/components/schemas/Error-401'
         403:
@@ -453,6 +453,10 @@ components:
 
     Patient:
       type: object
+      description: Describes the Patient
+      properties:
+        resourceType:
+          minLength: 1
 
     Coverage:
       required:
@@ -719,7 +723,7 @@ components:
         totalBenefit:
           $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
       description: A bundle of beneficiary claims information in the ExplanationOfBenefit resource format.
-    Success-200-Empty:
+    Success-200Empty:
       description: Sucessful call. 200 OK returned with no body details.
     Error-401:
       description: Authentication credentials were not provided. Unable to continue.
