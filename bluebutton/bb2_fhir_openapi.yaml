@@ -420,7 +420,7 @@ components:
           $ref: '#/components/schemas/Link_Info'
         entry:
           type: array
-          $ref: './Patient.schema.json'
+          $ref: '../fhir/Patient.schema.json'
         meta:
           type: object
 
