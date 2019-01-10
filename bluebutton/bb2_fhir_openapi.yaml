@@ -863,6 +863,5 @@ components:
         authorizationCode:
           authorizationUrl: https://sandbox.bluebutton.cms.gov/v1/o/authorize/
           tokenUrl: https://sandbox.bluebutton.cms.gov/v1/o/token/
-
-        client_id: yIVEy5I4CD0i3pkcxQsrw7rchLTJF7Du8KwRqKUL
-        client_secret: lUnJLqqzdEkkznPb7QdC5Y8151vTVpthycQbAbcONBw9Y7mlYYIF4y5vPOsyWXHoTGJGtzmSjNU4dZj61NwxpPkJXF4prIj3m6JuBmFyE9BsR51HmwDQW841ava9P48B
+          client_id: yIVEy5I4CD0i3pkcxQsrw7rchLTJF7Du8KwRqKUL
+          client_secret: lUnJLqqzdEkkznPb7QdC5Y8151vTVpthycQbAbcONBw9Y7mlYYIF4y5vPOsyWXHoTGJGtzmSjNU4dZj61NwxpPkJXF4prIj3m6JuBmFyE9BsR51HmwDQW841ava9P48B
