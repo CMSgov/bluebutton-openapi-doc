@@ -350,7 +350,7 @@ paths:
           - application/json
       responses:
         200:
-          $ref: '#/components/schemas/Bundled_Patient'
+          $ref: '#/components/schemas/Patient'
         401:
           $ref: '#/components/schemas/Error-401'
         403:
