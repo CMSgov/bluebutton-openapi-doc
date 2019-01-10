@@ -719,7 +719,7 @@ components:
         totalBenefit:
           $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
       description: A bundle of beneficiary claims information in the ExplanationOfBenefit resource format.
-    Sucess-200-Empty:
+    Success-200-Empty:
       description: Sucessful call. 200 OK returned with no body details.
     Error-401:
       description: Authentication credentials were not provided. Unable to continue.
