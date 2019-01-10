@@ -80,7 +80,6 @@ paths:
           $ref: '#/components/schemas/Error-403'
         404:
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Patient:
     get:
       security:
@@ -120,7 +119,6 @@ paths:
           $ref: '#/components/schemas/Error-403'
         404:
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Patient/{id}:
     summary: Get a patient by ID
     get:
@@ -144,7 +142,6 @@ paths:
           $ref: '#/components/schemas/Error-403'
         404:
           $ref: '#/components/schemas/Error-404'
-
 components:
   schemas:
     CapabilityStatement:
@@ -153,7 +150,6 @@ components:
       properties:
         resourceType:
           minLength: 1
-
     Patient:
       type: object
       description: Describes the Patient
@@ -161,7 +157,6 @@ components:
         resourceType:
           minLength: 1
           type: string
-
     Success-200Empty:
       description: Sucessful call. 200 OK returned with no body details.
     Error-401:
@@ -172,8 +167,6 @@ components:
       description: The page/resource you requested was not found.
     Error-405:
       description: Method Not Allowed.
-
-
   securitySchemes:
     OAuth2:
       type: oauth2
