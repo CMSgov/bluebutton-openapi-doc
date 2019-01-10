@@ -457,6 +457,7 @@ components:
       properties:
         resourceType:
           minLength: 1
+          type: string
 
     Coverage:
       required:
@@ -607,7 +608,7 @@ components:
           minLength: 1
           type: string
         _created:
-          $ref: '#/components/schemas/ExplanationOfBenefit__created'
+          $ref: '#/components/schemas/ExplanationOfBenefit_created'
         disposition:
           minLength: 1
           type: string
@@ -802,7 +803,7 @@ components:
         code:
           minLength: 1
           type: string
-    ExplanationOfBenefit__created:
+    ExplanationOfBenefit_created:
       type: object
       properties:
         fhir_comments:
@@ -861,6 +862,10 @@ components:
     revoke:
       type: object
       properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
 
 
   securitySchemes:
