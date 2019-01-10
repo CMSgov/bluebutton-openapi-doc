@@ -80,68 +80,7 @@ paths:
           $ref: '#/components/schemas/Error-403'
         404:
           $ref: '#/components/schemas/Error-404'
-  /fhir/Patient:
-    get:
-      security:
-      - OAuth2:
-        - read
-      tags:
-      - Patient
-      parameters:
-      - name: _id
-        in: query
-        description: The ID of the resource
-        required: false
-        schema:
-          type: string
-      - name: identifier
-        in: query
-        description: A patient identifier
-        required: false
-        schema:
-          type: string
-      - name: _format
-        in: query
-        description: The format for the returned body content
-        required: false
-        schema:
-          type: string
-          default: application/fhir+json
-          enum:
-          - application/fhir+json
-          - application/json
-      responses:
-        200:
-          $ref: '#/components/schemas/Patient'
-        401:
-          $ref: '#/components/schemas/Error-401'
-        403:
-          $ref: '#/components/schemas/Error-403'
-        404:
-          $ref: '#/components/schemas/Error-404'
-  /fhir/Patient/{id}:
-    summary: Get a patient by ID
-    get:
-      security:
-      - OAuth2:
-        - read
-      tags:
-      - Patient
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          $ref: '#/components/schemas/Patient'
-        401:
-          $ref: '#/components/schemas/Error-401'
-        403:
-          $ref: '#/components/schemas/Error-403'
-        404:
-          $ref: '#/components/schemas/Error-404'
+
 components:
   schemas:
     CapabilityStatement:
