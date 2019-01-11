@@ -1,40 +1,42 @@
 # CMS Blue Button 2.0 API  OpenAPI Specification
-[![Build Status](https://travis-ci.com/cmsgov/bluebutton-openapi-doc.svg?branch=master)](https://travis-ci.com/cmsgov/bluebutton-openapi-doc)
-## Steps to finish
 
-1. Enable [Travis](https://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A) for your repository (**note**: you already have `.travis.yml` file)
-1. [Create GitHub access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/); select `public_repo` on `Select scopes` section.
-1. Use the token value as a value for [Travis environment variable](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings) with the name `GH_TOKEN`
-1. Make a test commit to trigger CI: `git commit --allow-empty -m "Test Travis CI" && git push`
-1. Wait until Travis build is finished. You can check progress by clicking on the `Build Status` badge at the top
-1. **[Optional]** You can setup [custom domain](https://help.github.com/articles/using-a-custom-domain-with-github-pages/) (just create `web/CNAME` file)
-1. **[Optional]** If your API is public consider adding it into [APIs.guru](https://APIs.guru) directory using [this form](https://apis.guru/add-api/).
-1. Delete this section ❌
+This is a draft of an OpenAPI 3.0 definition document for the CMS Blue Button 2.0 API.
 
-## Links
+The OpenAPI 3.0 definition document is in the bluebutton folder. 
+It is called: bb2_fhir_openapi.yaml
 
-- [Reference Documentation (ReDoc)](https://cmsgov.github.io/bluebutton-openapi-doc/)
-- [SwaggerUI](https://cmsgov.github.io/bluebutton-openapi-doc/swagger-ui/)
-- OpenAPI Raw Files: [JSON](https://cmsgov.github.io/bluebutton-openapi-doc/openapi.json) [YAML](https://cmsgov.github.io/bluebutton-openapi-doc/openapi.yaml)
+The document can be edited using the launch_ed.sh command. This launches a docker 
+container with the swagger-editor. After successfully launching the editor
+it can be reached via a browser
 
-**Warning:** All above links are updated only after Travis CI finishes deployment
+    http://localhost:8080
+    
+OAuth2.0 redirection dows not work correctly in the swagger-editor. 
+Therefore to exercise the API a separate script is provided to launch
+swagger-ui
 
-## Working on specification
-### Install
+    ./launch-ui.sh
 
-1. Install [Node JS](https://nodejs.org/)
-2. Clone repo and run `npm install` in the repo root
+This will launch the swagger-ui in a docker container. This can be accessed
+in a browser with:
 
-### Usage
+    http://localhost:3200
+    
+    
+OAuth2.0 authorization does work with swagger-ui as long as you have a 
+redirect_uri specificed in your application record on the [CMS Blue Button sandbox](https://sandbox.bluebutton.cms.gov)
 
-#### `npm start`
-Starts the development server.
+The setting for the redirect_uri should be:
 
-#### `npm run build`
-Bundles the spec and prepares web_deploy folder with static assets.
+    http://localhost:3200/oauth2-redirect.html
+    
+A sandbox app has been setup for the OpenAPI 3.0 definition document. The Client_id 
+and client_secret are included in the Authorization Token URL on the Authorization panel.
+You can copy these in to the respective client_id and client_secret fields.
+Alternatively, you can register your own application and supply your own 
+client_id and client_secret in the authorization panel.
 
-#### `npm test`
-Validates the spec.
 
-#### `npm run gh-pages`
-Deploys docs to GitHub Pages. You don't need to run it manually if you have Travis CI configured.
+
+
+

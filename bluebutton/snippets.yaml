@@ -394,12 +394,8 @@ components:
         total:
           type: number
         link:
-          type: array
-          items:
           $ref: '#/components/schemas/Link_Info'
         entry:
-          type: array
-          items:
           $ref: '#/components/schemas/Coverage'
         meta:
           type: object
