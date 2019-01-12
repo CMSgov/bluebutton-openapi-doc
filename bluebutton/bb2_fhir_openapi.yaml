@@ -32,7 +32,7 @@ info:
 
     This is the frist version of ouur OpenAPI3 definiiton docuument that attempts to
         import fhir json schema from an external file in the fhir sub-directory.
-  version: v1.0.43
+  version: v1.0.44-3
 servers:
 - url: https://sandbox.bluebutton.cms.gov/v1
   description: Blue Button 2.0 API - Sandbox with Synthetic data
@@ -342,11 +342,7 @@ paths:
 components:
   schemas:
     CapabilityStatement:
-      type: object
-      description: Describes the services and resources provided by this FHIR Server
-      properties:
-        resourceType:
-          minLength: 1
+      description: Documents the FHIR Resources and interactions supported by the server.
 
     Bundle_Coverage:
       type: object
