@@ -6,7 +6,8 @@ export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # set environment variables
 export HOST_EDITOR_PORT=8080
 export TARGET_DIR=openapi/bluebutton
-export OPENAPI_DOC="bb2_fhir_openapi.yaml"
+export OPENAPI_DOC="openapi.yaml"
+export REPO_BASE_DIR=bluebutton
 export NGINX_BASE=/usr/share/nginx/html
 export OA_URL=/$TARGET_DIR/$OPENAPI_DOC
 export DOCKER_NAME=swagger-ed
@@ -14,7 +15,7 @@ export DOCKER_NAME=swagger-ed
 # launch docker with swagger-ui in background
 docker run -d \
        -p $HOST_EDITOR_PORT:8080  \
-       -v $DIR/bluebutton:$NGINX_BASE/$TARGET_DIR  \
+       -v $DIR/$REPO_BASE_DIR:$NGINX_BASE/$TARGET_DIR  \
        -e API_URL=$OA_URL  \
        --name $DOCKER_NAME  \
        swaggerapi/swagger-editor
@@ -22,7 +23,7 @@ docker run -d \
 echo ""
 echo goto http://localhost:$HOST_EDITOR_PORT
 echo ""
-echo YAML Source=$DIR/bluebutton/$OPENAPI_DOC
+echo YAML Source=$DIR/$REPO_BASE_DIR/$OPENAPI_DOC
 echo ""
 echo If you get a docker error try the following commands
 echo docker container kill $DOCKER_NAME
