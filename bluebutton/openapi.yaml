@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Blue Button 2.0 with OAuth2
-  description: |-
+  description: >-
     **D R A F T -- D R A F T -- D R A F T -- D R A F T -- D R A F T -- D R A F
         T**
 
@@ -10,7 +10,8 @@ info:
         beneficiaries to connect their Medicare claims data to the applications,
         services, and research programs they trust.
 
-    Claims information that extends as far back as 2015 can be accessed using the
+    Claims information that extends as far back as 2015 can be accessed using
+    the
         HL7 Fast Healthcare interoperability Resource (FHIR) specification.
 
     Fast Healthcare Interoperability Resources (FHIR, pronounced "Fire") defines
@@ -30,63 +31,67 @@ info:
         be  consistent with the FHIR specification we will use the term Patient
         throughout this documentation to refer to the Medicare Beneficiary.
 
-    This is the frist version of ouur OpenAPI3 definiiton docuument that attempts to
+    This is the frist version of ouur OpenAPI3 definiiton docuument that
+    attempts to
         import fhir json schema from an external file in the fhir sub-directory.
   version: v1.0.44-14
 servers:
-- url: https://sandbox.bluebutton.cms.gov/v1
-  description: Blue Button 2.0 API - Sandbox with Synthetic data
+  - url: 'https://sandbox.bluebutton.cms.gov/v1'
+    description: Blue Button 2.0 API - Sandbox with Synthetic data
 tags:
-- name: CapabilityStatement
-- name: Patient
-- name: Coverage
-- name: ExplanationOfBenefit
-
+  - name: CapabilityStatement
+  - name: Patient
+  - name: Coverage
+  - name: ExplanationOfBenefit
 externalDocs:
-  descripton: >-
-    Find more information in the CMS Blue Button 2.0 Implementation Guide here:
-  url: https://bluebutton.cms.gov/assets/ig/index.html
-
-
+  url: 'https://bluebutton.cms.gov/assets/ig/index.html'
 paths:
   /fhir/metadata:
-    description: Metadata statement. In DSTU2 this was known as the ConformanceStatement. In STU3 this was changed to the CapabilityStatement
+    description: >-
+      Metadata statement. In DSTU2 this was known as the ConformanceStatement.
+      In STU3 this was changed to the CapabilityStatement
     get:
       tags:
-      - CapabilityStatement
+        - CapabilityStatement
       parameters:
-      - name: _format
-        in: query
-        description: The format for the returned body content
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          default: application/fhir+json
-          enum:
-          - application/fhir+json
-          - application/json
-      - name: Content-Type
-        in: header
-        required: false
-        style: simple
-        explode: false
-        schema:
-          type: string
-          enum:
-          - application/fhir+json
-          - application/json
+        - name: _format
+          in: query
+          description: The format for the returned body content
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            default: application/fhir+json
+            enum:
+              - application/fhir+json
+              - application/json
+        - name: Content-Type
+          in: header
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+            enum:
+              - application/fhir+json
+              - application/json
       responses:
-        200:
-          $ref: '#/components/schemas/CapabilityStatement'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapabilityStatement'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/CapabilityStatement'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Patient:
     get:
       security:
@@ -118,15 +123,21 @@ paths:
               - application/fhir+json
               - application/json
       responses:
-        200:
-          $ref: '#/components/schemas/Patient'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Patient/{id}:
     summary: Get a patient by ID
     get:
@@ -142,15 +153,21 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          $ref: '#/components/schemas/Patient'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Coverage:
     get:
       security:
@@ -186,7 +203,7 @@ paths:
             default: 0
         - name: _count
           in: query
-          description: The number of records to return in the bundle [maximum=50]
+          description: 'The number of records to return in the bundle [maximum=50]'
           required: false
           schema:
             maximum: 50
@@ -205,15 +222,21 @@ paths:
             type: integer
             format: int32
       responses:
-        200:
-          $ref: '#/components/schemas/Bundle_Coverage'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bundle_Coverage'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle_Coverage'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/Coverage/{id}:
     get:
       security:
@@ -239,15 +262,21 @@ paths:
               - application/fhir+json
               - application/json
       responses:
-        200:
-          $ref: '#/components/schemas/Coverage'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coverage'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Coverage'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/ExplanationOfBenefit:
     get:
       security:
@@ -273,7 +302,7 @@ paths:
             default: 0
         - name: _count
           in: query
-          description: The number of records to return in the bundle [maximum=50]
+          description: 'The number of records to return in the bundle [maximum=50]'
           required: false
           schema:
             maximum: 50
@@ -302,15 +331,21 @@ paths:
               - application/fhir+json
               - application/json
       responses:
-        200:
-          $ref: '#/components/schemas/Bundle_ExplanationOfBenefit'
-        401:
+        '200':
+          description: 'A bundle of ExplanationOfBenefit resources'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bundle_ExplanationOfBenefit'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle_ExplanationOfBenefit'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
   /fhir/ExplanationOfBenefit/{id}:
     get:
       security:
@@ -335,21 +370,25 @@ paths:
               - application/fhir+json
               - application/json
       responses:
-        200:
-          $ref: '#/components/schemas/ExplanationOfBenefit'
-        401:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExplanationOfBenefit'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/ExplanationOfBenefit'
+        '401':
           $ref: '#/components/schemas/Error-401'
-        403:
+        '403':
           $ref: '#/components/schemas/Error-403'
-        404:
+        '404':
           $ref: '#/components/schemas/Error-404'
-
-
 components:
   schemas:
     CapabilityStatement:
       description: Documents the FHIR Resources and interactions supported by the server.
-
     Bundle_Coverage:
       type: object
       description: A bundle of coverage resources returned by a search
@@ -367,7 +406,6 @@ components:
           type: object
         type:
           type: string
-
     Coverage:
       required:
         - beneficiaryReference
@@ -404,17 +442,15 @@ components:
           $ref: '#/components/schemas/Grouping'
         type:
           $ref: '#/components/schemas/Type'
-
         status:
           type: string
           example: active
         extension:
           type: array
           items:
-          anyOf:
-          enum:
-            - $ref: '#/components/schemas/Coverage_ESRD'
-            - $ref: '#/components/schemas/Coverage_OASI'
+            oneOf:
+              - $ref: '#/components/schemas/Coverage_OASI'
+              - $ref: '#/components/schemas/Coverage_ESRD'
         identifier:
           minItems: 1
           uniqueItems: true
@@ -441,7 +477,6 @@ components:
         sequence:
           type: number
       description: Describes the insurance coverages that a Medicare beneficiary has.
-
     Patient:
       type: object
       description: Describes the Patient
@@ -453,22 +488,22 @@ components:
           $ref: '#/components/schemas/Meta'
         name:
           type: array
-          $ref: '#/components/schemas/HumanName'
-
+          items:
+            $ref: '#/components/schemas/HumanName'
     HumanName:
       type: object
       description: A person's Name
       properties:
         use:
           type: string
-          oneOf:
-          - usual
-          - official
-          - temp
-          - nickname
-          - anonymous
-          - old
-          - maiden
+          enum:
+            - usual
+            - official
+            - temp
+            - nickname
+            - anonymous
+            - old
+            - maiden
         text:
           type: string
         family:
@@ -481,10 +516,8 @@ components:
           type: string
         period:
           type: string
-
     Meta:
       type: object
-
     Grouping:
       type: object
       properties:
@@ -493,13 +526,12 @@ components:
           example: Medicare
         subPlan:
           $ref: '#/components/schemas/Part_A_2_D'
-
     Type:
       type: object
       properties:
         coding:
           type: array
-          properties:
+          items:
             type: object
             properties:
               system:
@@ -507,35 +539,30 @@ components:
                 example: Medicare
               code:
                 $ref: '#/components/schemas/Part_A_2_D'
-
     Part_A_2_D:
       type: string
       oneOf:
-      - $ref: '#/components/schemas/Part_A'
-      - $ref: '#/components/schemas/Part_B'
-      - $ref: '#/components/schemas/Part_D'
-
+        - $ref: '#/components/schemas/Part_A'
+        - $ref: '#/components/schemas/Part_B'
+        - $ref: '#/components/schemas/Part_D'
     Part_A:
       type: string
       enum:
-      - Part A
-
+        - Part A
     Part_B:
       type: object
       properties:
         B:
           type: string
           enum:
-          - Part B
-
+            - Part B
     Part_D:
       type: object
       properties:
         D:
           type: string
           enum:
-          - Part D
-
+            - Part D
     Link_Info:
       type: object
       properties:
@@ -560,7 +587,6 @@ components:
         end:
           minLength: 1
           type: string
-
     Coverage_ESRD:
       type: object
       properties:
@@ -569,24 +595,22 @@ components:
           example: Aged without end-stage renal disease (ESRD)
         system:
           type: string
-          example: https://bluebutton.cms.gov/resources/variables/ms_cd
+          example: 'https://bluebutton.cms.gov/resources/variables/ms_cd'
         code:
           type: string
           example: 10
-
     Coverage_OASI:
-        type: object
-        properties:
-          display:
-            type: string
-            example: Old age and survivor’s insurance (OASI)
-          system:
-            type: string
-            example: https://bluebutton.cms.gov/resources/variables/orec
-          code:
-            type: string
-            example: 0
-
+      type: object
+      properties:
+        display:
+          type: string
+          example: Old age and survivor’s insurance (OASI)
+        system:
+          type: string
+          example: 'https://bluebutton.cms.gov/resources/variables/orec'
+        code:
+          type: string
+          example: 0
     Bundle_ExplanationOfBenefit:
       type: object
       description: A bundle of ExplanationOfBenefit resources returned by a search
@@ -604,7 +628,6 @@ components:
           $ref: '#/components/schemas/Meta'
         type:
           type: string
-
     ExplanationOfBenefit:
       required:
         - _created
@@ -769,8 +792,9 @@ components:
           $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
         totalBenefit:
           $ref: '#/components/schemas/ExplanationOfBenefit_totalCost'
-      description: A bundle of beneficiary claims information in the ExplanationOfBenefit resource format.
-
+      description: >-
+        A bundle of beneficiary claims information in the ExplanationOfBenefit
+        resource format.
     ExplanationOfBenefit_totalCost:
       type: object
       properties:
@@ -782,7 +806,6 @@ components:
         code:
           minLength: 1
           type: string
-
     ExplanationOfBenefit_created:
       type: object
       properties:
@@ -790,13 +813,11 @@ components:
           type: array
           items:
             properties: {}
-
     ExplanationOfBenefit_coverage:
       type: object
       properties:
         coverageReference:
           $ref: '#/components/schemas/Coverage_issuerReference'
-
     Coverage_text:
       type: object
       properties:
@@ -806,24 +827,25 @@ components:
         div:
           minLength: 1
           type: string
-
     Success-200Empty:
       description: Sucessful call. 200 OK returned with no body details.
     Error-401:
       description: Authentication credentials were not provided. Unable to continue.
     Error-403:
-      description: The Access token does not have the correct scopes or permissions. Unable to process your request.
+      description: >-
+        The Access token does not have the correct scopes or permissions. Unable
+        to process your request.
     Error-404:
       description: The page/resource you requested was not found.
     Error-405:
       description: Method Not Allowed.
-
   securitySchemes:
     OAuth2:
       type: oauth2
       flows:
+        implicit:
+          authorizationUrl: 'https://sandbox.bluebutton.cms.gov/v1/o/authorize/'
+          scopes: {}
         authorizationCode:
-          authorizationUrl: https://sandbox.bluebutton.cms.gov/v1/o/authorize/
-          tokenUrl: https://sandbox.bluebutton.cms.gov/v1/o/token/?clientid=yIVEy5I4CD0i3pkcxQsrw7rchLTJF7Du8KwRqKUL&client_secret=lUnJLqqzdEkkznPb7QdC5Y8151vTVpthycQbAbcONBw9Y7mlYYIF4y5vPOsyWXHoTGJGtzmSjNU4dZj61NwxpPkJXF4prIj3m6JuBmFyE9BsR51HmwDQW841ava9P48B
-
-
+          authorizationUrl: 'https://sandbox.bluebutton.cms.gov/v1/o/authorize/'
+          tokenUrl: 'https://sandbox.bluebutton.cms.gov/v1/o/token/'
