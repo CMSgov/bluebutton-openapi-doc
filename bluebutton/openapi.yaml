@@ -31,7 +31,7 @@ info:
         be  consistent with the FHIR specification we will use the term Patient
         throughout this documentation to refer to the Medicare Beneficiary.
 
-    This is the frist version of ouur OpenAPI3 definiiton docuument that
+    This is the frist version of our OpenAPI3 definiiton document that
     attempts to
         import fhir json schema from an external file in the fhir sub-directory.
   version: v1.0.44-14
