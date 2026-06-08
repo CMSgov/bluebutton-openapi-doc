@@ -1,3 +1,8 @@
+This repository has been archived and is no longer maintained.
+The code is provided for historical reference and may contain unpatched or unknown
+vulnerabilities.
+It should not be used in production systems.
+
 # CMS Blue Button 2.0 API  OpenAPI Specification
 
 This is a draft of an OpenAPI 3.0 definition document for the CMS Blue Button 2.0 API.
